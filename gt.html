@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>小王同学加油</title>
+    <link rel='stylesheet' href='https://fonts.googleapis.cn/css?family=Montserrat:400,700'>
+    <link rel="shortcut icon" href="https://utopiaxc-imgs.oss-cn-beijing.aliyuncs.com/2021/08/28/7d0e0a5f33e5a.ico">
+    <style>
+        :root {
+            --smaller: .75;
+        }
+ 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+ 
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+ 
+        body {
+            align-items: center;
+            background: linear-gradient(45deg, #8cbcff 0, #ffb282 100%);
+            display: flex;
+            font-family: "Montserrat", "sans-serif";
+        }
+ 
+        .container {
+            color: #333;
+            margin: 0 auto;
+            text-align: center;
+        }
+ 
+        h1 {
+            font-weight: normal;
+            letter-spacing: .25rem;
+            text-transform: uppercase;
+        }
+ 
+        li {
+            display: inline-block;
+            font-size: 2em;
+            list-style-type: none;
+            padding: 1em;
+            text-transform: uppercase;
+        }
+ 
+        li span {
+            display: block;
+            font-size: 6rem;
+        }
+ 
+        span, li, h1 {
+            color: floralwhite;
+        }
+    </style>
+</head>
+ 
+<body>
+    <div class="container">
+        <h1 id="headline">距离研究生考试还有：</h1>
+        <div id="countdown">
+            <ul>
+                <li><span id="days"></span>天</li>
+                <li><span id="hours"></span>小时</li>
+                <li><span id="minutes"></span>分钟</li>
+                <li><span id="seconds"></span>秒</li>
+            </ul>
+        </div>
+		<p style="color: floralwhite; margin-top: 20px; font-size: 1.5em;">愿你终成所愿，愿你一往无前</p>
+        <p style="color: floralwhite; margin-top: 20px; font-size: 1.5em;">小王同学考试加油，你一定能上岸！！！</p>
+    </div>
+    <script>
+        let targetTime = new Date('2024-12-21T08:00:00'); 
+        setInterval(updateTime, 1000); 
+ 
+        function PrefixInteger(num, length) {
+            return (num / Math.pow(10, length)).toFixed(length).substr(2);
+        }
+ 
+        function updateTime() {
+            let nowTime = new Date();
+            let offsetTime = targetTime.getTime() - nowTime.getTime();
+            offsetTime = parseInt(offsetTime / 1000);
+            let days = parseInt(offsetTime / (24 * 60 * 60));
+            let hours = parseInt(offsetTime % (24 * 60 * 60) / (60 * 60));
+            let minutes = parseInt(offsetTime % (60 * 60) / 60);
+            let seconds = offsetTime % 60;
+ 
+            if (offsetTime < 0) {
+                document.getElementById('headline').innerText = "考试已结束，祝你所愿皆所得";
+                days = hours = minutes = seconds = 0; 
+            }
+ 
+            document.getElementById('days').innerText = PrefixInteger(days, 2);
+            document.getElementById('hours').innerText = PrefixInteger(hours, 2);
+            document.getElementById('minutes').innerText = PrefixInteger(minutes, 2);
+            document.getElementById('seconds').innerText = PrefixInteger(seconds, 2);
+        }
+    </script>
+</body>
+ 
+</html>
