@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新兰永恒</title>
+    <style>
+        /* 设置背景图片 */
+        body {
+            background-image: url('2.jpg');
+            /* 将此链接替换为你的图片地址 */
+            background-size: cover;
+            /* 使背景图填满整个页面 */
+            background-position: center;
+            /* 背景图居中 */
+            background-attachment: fixed;
+            /* 背景固定，滚动时不移动 */
+            color: white;
+            /* 设置文本颜色为白色，确保文本可见 */
+            font-family: Arial, sans-serif;
+            /* 设置字体 */
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            /* 设置页面高度为100%视窗 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        #timer {
+            font-size: 48px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div>
+        <h1>新兰已经在一起：</h1>
+        <div id="timer">00年 00月 00日 00时 00分 00秒</div>
+    </div>
+
+    <script>
+        // 设置起始时间为2019年1月12日
+        const startDate = new Date("2019-01-12T00:00:00Z");
+
+        const timerDisplay = document.getElementById("timer");
+
+        // 计算并显示从2019年1月12日到现在的时间差
+        function updateTimerDisplay() {
+            const currentTime = new Date();
+            const timeDifference = currentTime - startDate;
+
+            const totalSeconds = Math.floor(timeDifference / 1000);
+            const totalMinutes = Math.floor(totalSeconds / 60);
+            const totalHours = Math.floor(totalMinutes / 60);
+            const totalDays = Math.floor(totalHours / 24);
+            const years = Math.floor(totalDays / 365);
+            const months = Math.floor((totalDays % 365) / 30); // 平均每月30天
+            const days = totalDays % 30;
+            const hours = totalHours % 24;
+            const minutes = totalMinutes % 60;
+            const seconds = totalSeconds % 60;
+
+            const formattedYears = years < 10 ?  + years : years;
+            const formattedMonths = months < 10 ? "0" + months : months;
+            const formattedDays = days < 10 ? "0" + days : days;
+            const formattedHours = hours < 10 ? "0" + hours : hours;
+            const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+            const formattedSeconds = seconds < 10 ? "0" + seconds : seconds;
+
+            timerDisplay.textContent = `${formattedYears} 年 ${formattedMonths} 月 ${formattedDays} 日 ${formattedHours} 时 ${formattedMinutes} 分 ${formattedSeconds} 秒`;
+        }
+
+        // 每秒更新一次计时器
+        setInterval(updateTimerDisplay, 1000);
+
+        // 页面加载时初始显示一次计时
+        updateTimerDisplay();
+    </script>
+
+</body>
+
+</html>
