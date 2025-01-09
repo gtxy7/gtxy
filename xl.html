@@ -49,44 +49,91 @@
     </div>
 
     <script>
-        // 设置起始时间为2019年1月12日
-        const startDate = new Date("2019-01-12T00:00:00Z");
-
-        const timerDisplay = document.getElementById("timer");
-
-        // 计算并显示从2019年1月12日到现在的时间差
-        function updateTimerDisplay() {
-            const currentTime = new Date();
-            const timeDifference = currentTime - startDate;
-
-            const totalSeconds = Math.floor(timeDifference / 1000);
-            const totalMinutes = Math.floor(totalSeconds / 60);
-            const totalHours = Math.floor(totalMinutes / 60);
-            const totalDays = Math.floor(totalHours / 24);
-            const years = Math.floor(totalDays / 365);
-            const months = Math.floor((totalDays % 365) / 30); // 平均每月30天
-            const days = totalDays % 30;
-            const hours = totalHours % 24;
-            const minutes = totalMinutes % 60;
-            const seconds = totalSeconds % 60;
-
-            const formattedYears = years < 10 ?  + years : years;
-            const formattedMonths = months < 10 ? "0" + months : months;
-            const formattedDays = days < 10 ? "0" + days : days;
-            const formattedHours = hours < 10 ? "0" + hours : hours;
-            const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
-            const formattedSeconds = seconds < 10 ? "0" + seconds : seconds;
-
-            timerDisplay.textContent = `${formattedYears} 年 ${formattedMonths} 月 ${formattedDays} 日 ${formattedHours} 时 ${formattedMinutes} 分 ${formattedSeconds} 秒`;
-        }
-
-        // 每秒更新一次计时器
-        setInterval(updateTimerDisplay, 1000);
-
-        // 页面加载时初始显示一次计时
-        updateTimerDisplay();
-    </script>
-
-</body>
-
-</html>
+         // 设置起始时间为2019年1月12日
+         const startDate = new Date("2019-01-12T00:00:00Z");
+         const timerDisplay = document.getElementById("timer");
+ 
+         // 每个月的天数（非闰年）
+         const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; 
+ 
+         // 判断是否是闰年
+         function isLeapYear(year) {
+             return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+         }
+ 
+         // 计算日期之间的精确差异，包含年、月、日、时、分、秒
+         function calculateDateDifference(startDate, endDate) {
+             let years = endDate.getFullYear() - startDate.getFullYear();
+             let months = endDate.getMonth() - startDate.getMonth();
+             let days = endDate.getDate() - startDate.getDate();
+             let hours = endDate.getHours() - startDate.getHours();
+             let minutes = endDate.getMinutes() - startDate.getMinutes();
+             let seconds = endDate.getSeconds() - startDate.getSeconds();
+ 
+             // 如果月份差为负数，说明没有满整年，要调整年份和月份
+             if (months < 0) {
+                 years--;
+                 months += 12;
+             }
+ 
+             // 如果天数差为负数，说明没有满整月，要调整月份和天数
+             if (days < 0) {
+                 months--;
+                 if (months < 0) {
+                     months = 11;
+                     years--;
+                 }
+ 
+                 // 调整天数，考虑不同月份的天数
+                 const prevMonth = (endDate.getMonth() - 1 + 12) % 12;
+                 days += daysInMonth[prevMonth];
+                 if (prevMonth === 1 && isLeapYear(endDate.getFullYear())) {
+                     days += 1; // 闰年的2月有29天
+                 }
+             }
+ 
+             // 如果小时差为负数，说明没有满整天，要调整天数和小时
+             if (hours < 0) {
+                 days--;
+                 hours += 24;
+             }
+ 
+             // 如果分钟差为负数，说明没有满整小时，要调整小时和分钟
+             if (minutes < 0) {
+                 hours--;
+                 minutes += 60;
+             }
+ 
+             // 如果秒数差为负数，说明没有满整分钟，要调整分钟和秒数
+             if (seconds < 0) {
+                 minutes--;
+                 seconds += 60;
+             }
+ 
+             return { years, months, days, hours, minutes, seconds };
+         }
+ 
+         // 更新显示
+         function updateTimerDisplay() {
+             const currentTime = new Date();
+             const diff = calculateDateDifference(startDate, currentTime);
+ 
+             const formattedYears = diff.years < 10 ? "0" + diff.years : diff.years;
+             const formattedMonths = diff.months < 10 ? "0" + diff.months : diff.months;
+             const formattedDays = diff.days < 10 ? "0" + diff.days : diff.days;
+             const formattedHours = diff.hours < 10 ? "0" + diff.hours : diff.hours;
+             const formattedMinutes = diff.minutes < 10 ? "0" + diff.minutes : diff.minutes;
+             const formattedSeconds = diff.seconds < 10 ? "0" + diff.seconds : diff.seconds;
+ 
+             timerDisplay.textContent = `${formattedYears} 年 ${formattedMonths} 月 ${formattedDays} 日 ${formattedHours} 小时 ${formattedMinutes} 分钟 ${formattedSeconds} 秒`;
+         }
+ 
+         // 每秒更新一次计时器
+         setInterval(updateTimerDisplay, 1000);
+ 
+         // 页面加载时初始显示一次计时
+         updateTimerDisplay();
+     </script>
+ 
+ </body>
+ </html>
